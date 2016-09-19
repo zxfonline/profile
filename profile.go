@@ -100,11 +100,23 @@ func (p *Profile) Stop() {
 		return
 	}
 	p.closer()
-	atomic.StoreUint32(&started, 0)
+	switch prof.mode {
+	case cpuMode:
+		atomic.StoreUint32(&cpuMode_started, 0)
+	case memMode:
+		atomic.StoreUint32(&memMode_started, 0)
+	case blockMode:
+		atomic.StoreUint32(&blockMode_started, 0)
+	case traceMode:
+		atomic.StoreUint32(&traceMode_started, 0)
+	}
 }
 
 // started is non zero if a profile is running.
-var started uint32
+var cpuMode_started uint32
+var memMode_started uint32
+var blockMode_started uint32
+var traceMode_started uint32
 
 // Start starts a new profiling session.
 // The caller should call the Stop method on the value returned
@@ -112,8 +124,24 @@ var started uint32
 func Start(options ...func(*Profile)) interface {
 	Stop()
 } {
-	if !atomic.CompareAndSwapUint32(&started, 0, 1) {
-		log.Fatal("profile: Start() already called")
+
+	switch prof.mode {
+	case cpuMode:
+		if !atomic.CompareAndSwapUint32(&cpuMode_started, 0, 1) {
+			log.Fatal("cpu profile: Start() already called")
+		}
+	case memMode:
+		if !atomic.CompareAndSwapUint32(&memMode_started, 0, 1) {
+			log.Fatal("mem profile: Start() already called")
+		}
+	case blockMode:
+		if !atomic.CompareAndSwapUint32(&blockMode_started, 0, 1) {
+			log.Fatal("block profile: Start() already called")
+		}
+	case traceMode:
+		if !atomic.CompareAndSwapUint32(&traceMode_started, 0, 1) {
+			log.Fatal("trace profile: Start() already called")
+		}
 	}
 
 	var prof Profile
