@@ -100,7 +100,7 @@ func (p *Profile) Stop() {
 		return
 	}
 	p.closer()
-	switch prof.mode {
+	switch p.mode {
 	case cpuMode:
 		atomic.StoreUint32(&cpuMode_started, 0)
 	case memMode:
@@ -125,6 +125,11 @@ func Start(options ...func(*Profile)) interface {
 	Stop()
 } {
 
+	var prof Profile
+	for _, option := range options {
+		option(&prof)
+	}
+
 	switch prof.mode {
 	case cpuMode:
 		if !atomic.CompareAndSwapUint32(&cpuMode_started, 0, 1) {
@@ -142,11 +147,6 @@ func Start(options ...func(*Profile)) interface {
 		if !atomic.CompareAndSwapUint32(&traceMode_started, 0, 1) {
 			log.Fatal("trace profile: Start() already called")
 		}
-	}
-
-	var prof Profile
-	for _, option := range options {
-		option(&prof)
 	}
 
 	path, err := func() (string, error) {

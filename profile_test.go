@@ -23,11 +23,11 @@ var profileTests = []struct {
 	code: `
 package main
 
-import "github.com/pkg/profile"
+import "github.com/zxfonline/profile"
 
 func main() {
 	defer profile.Start().Stop()
-}	
+}
 `,
 	checks: []checkFn{
 		NoStdout,
@@ -39,11 +39,11 @@ func main() {
 	code: `
 package main
 
-import "github.com/pkg/profile"
+import "github.com/zxfonline/profile"
 
 func main() {
 	defer profile.Start(profile.MemProfile).Stop()
-}	
+}
 `,
 	checks: []checkFn{
 		NoStdout,
@@ -55,11 +55,11 @@ func main() {
 	code: `
 package main
 
-import "github.com/pkg/profile"
+import "github.com/zxfonline/profile"
 
 func main() {
 	defer profile.Start(profile.MemProfileRate(2048)).Stop()
-}	
+}
 `,
 	checks: []checkFn{
 		NoStdout,
@@ -71,12 +71,12 @@ func main() {
 	code: `
 package main
 
-import "github.com/pkg/profile"
+import "github.com/zxfonline/profile"
 
 func main() {
 	profile.Start()
 	profile.Start()
-}	
+}
 `,
 	checks: []checkFn{
 		NoStdout,
@@ -88,11 +88,11 @@ func main() {
 	code: `
 package main
 
-import "github.com/pkg/profile"
+import "github.com/zxfonline/profile"
 
 func main() {
 	defer profile.Start(profile.BlockProfile).Stop()
-}	
+}
 `,
 	checks: []checkFn{
 		NoStdout,
@@ -104,11 +104,11 @@ func main() {
 	code: `
 package main
 
-import "github.com/pkg/profile"
+import "github.com/zxfonline/profile"
 
 func main() {
 	defer profile.Start(profile.ProfilePath(".")).Stop()
-}	
+}
 `,
 	checks: []checkFn{
 		NoStdout,
@@ -120,11 +120,11 @@ func main() {
 	code: `
 package main
 
-import "github.com/pkg/profile"
+import "github.com/zxfonline/profile"
 
 func main() {
 		defer profile.Start(profile.ProfilePath("README.md")).Stop()
-}	
+}
 `,
 	checks: []checkFn{
 		NoStdout,
@@ -136,7 +136,7 @@ func main() {
 	code: `
 package main
 
-import "github.com/pkg/profile"
+import "github.com/zxfonline/profile"
 
 func main() {
 	profile.Start(profile.CPUProfile).Stop()
@@ -160,11 +160,11 @@ func main() {
 	code: `
 package main
 
-import "github.com/pkg/profile"
+import "github.com/zxfonline/profile"
 
 func main() {
         defer profile.Start(profile.Quiet).Stop()
-}       
+}
 `,
 	checks: []checkFn{NoStdout, NoStderr, NoErr},
 }}
